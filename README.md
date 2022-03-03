@@ -19,3 +19,7 @@
 # Run `pre-commit` locally.
 
 `pre-commit run --all-files`
+
+# Downloading Data
+
+- Run `python3 pull-data.py`
