@@ -1,4 +1,5 @@
 import os
+import sys
 
 import yfinance as yf
 
@@ -11,9 +12,9 @@ def main():
         os.makedirs(r"data/stocks")
         os.makedirs(r"data/crypto")
 
-    # Download Stock CSV for past 5 years
+    # Download Stock CSV for past 4 years
     df = yf.download(
-        "NFLX JPM FB AMZN AAPL", start="2017-03-01", end="2022-03-01", group_by="ticker"
+        "NFLX JPM FB AMZN AAPL", start="2018-01-01", end="2022-03-01", group_by="ticker"
     )
     df.NFLX.to_csv("data/stocks/NFLX.csv")
     df.JPM.to_csv("data/stocks/JPM.csv")
@@ -21,10 +22,10 @@ def main():
     df.AMZN.to_csv("data/stocks/AMZN.csv")
     df.AAPL.to_csv("data/stocks/AAPL.csv")
 
-    # Download Crypto CSV for past 5 years
+    # Download Crypto CSV for past 4 years
     df = yf.download(
         "BTC-USD DOGE-USD ETH-USD ADA-USD SOL-USD",
-        start="2017-03-01",
+        start="2018-03-01",
         end="2022-03-01",
         group_by="ticker",
     )
@@ -38,4 +39,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
