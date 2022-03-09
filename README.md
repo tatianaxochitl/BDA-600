@@ -23,3 +23,9 @@
 # Downloading Data
 
 - Run `python3 pull-data.py`
+- Run `python 3 pull-trends.py`
+  - Note: This code may have to be run in chunks as there is a rate limit from Google for pulling trend data
+
+# Creating Features
+
+- Run `python3 create-features.py`

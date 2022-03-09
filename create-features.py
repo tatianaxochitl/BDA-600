@@ -16,14 +16,31 @@ def main():
         "data/stocks/JPM.csv",
         "data/stocks/NFLX.csv",
     ]
+    idx_files = ["data/DJI.csv", "data/GSPC.csv", "data/NDX.csv"]
+
+    dji_df = pd.DataFrame()
+    gspc_df = pd.DataFrame()
+    ndx_df = pd.DataFrame()
+
+    idx_dfs = [dji_df, gspc_df, ndx_df]
+    for file, i in zip(idx_files, range(3)):
+        df = pd.read_csv(file)
+        idx_dfs[i] = create_features(df)
+        save_features_file(file, idx_dfs[i])
+
     for file in all_files:
         df = pd.read_csv(file)
         new_df = create_features(df)
-        substr = ".csv"
-        inserttxt = "_features"
-        idx = file.index(substr)
-        new_file = file[:idx] + inserttxt + file[idx:]
-        new_df.to_csv(new_file)
+        new_df = compare_dfs(
+            new_df,
+            idx_dfs,
+            [
+                "DJI",
+                "GSPC",
+                "NDX",
+            ],
+        )
+        save_features_file(file, new_df)
 
 
 # create new features
@@ -46,9 +63,11 @@ def create_features(df: pd.DataFrame):
 
     # Day Change in Close price
     df["Day Change"] = df["Close"] - df["Close"].shift(1)
+    df["Day Change"] = (df["Day Change"] / (df["Close"].shift(1))) * 100
 
     # Day Change in Close price
     df["Volume Change"] = df["Volume"] - df["Volume"].shift(1)
+    df["Volume Change"] = (df["Volume Change"] / (df["Volume"].shift(1))) * 100
 
     # 7 days standard dev
     arr_size = df["Close"].size
@@ -97,6 +116,33 @@ def shift_columns(df: pd.DataFrame):
     df["Close"] = df["Previous Close"].shift(1)
     df.drop(columns="Adj Close")
     return df
+
+
+def save_features_file(file: str, new_df: pd.DataFrame):
+    substr = ".csv"
+    inserttxt = "_features"
+    idx = file.index(substr)
+    new_file = file[:idx] + inserttxt + file[idx:]
+    new_df.to_csv(new_file)
+
+
+def compare_dfs(first_df: pd.DataFrame, index_dfs: list, index_names: list):
+    for idx_df, idx_name in zip(index_dfs, index_names):
+        first_df[f"{idx_name} Change in Close Comparison"] = (
+            first_df["Day Change"] - idx_df["Day Change"]
+        )
+        first_df[f"{idx_name} Change in Close Comparison"] = (
+            first_df[f"{idx_name} Change in Close Comparison"] / idx_df["Day Change"]
+        )
+        first_df[f"{idx_name} Change in Volume Comparison"] = (
+            first_df["Volume Change"] - idx_df["Volume Change"]
+        ) / idx_df["Volume Change"]
+        first_df[f"{idx_name} Change in Volume Comparison"] = (
+            first_df[f"{idx_name} Change in Volume Comparison"]
+            / idx_df["Volume Change"]
+        )
+
+    return first_df
 
 
 if __name__ == "__main__":
