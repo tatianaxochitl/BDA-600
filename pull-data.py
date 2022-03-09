@@ -35,6 +35,18 @@ def main():
     df["ADA-USD"].to_csv("data/crypto/ADA.csv")
     df["SOL-USD"].to_csv("data/crypto/SOL.csv")
 
+    # Download NASDAQ100, S&P, and DOW for comparison
+    df = yf.download(
+        "^NDX ^GSPC ^DJI",
+        start="2018-03-01",
+        end="2022-03-01",
+        group_by="ticker",
+    )
+
+    df["^NDX"].to_csv("data/NDX.csv")
+    df["^GSPC"].to_csv("data/GSPC.csv")
+    df["^DJI"].to_csv("data/DJI.csv")
+
     print("Data Downloaded!")
 
 
