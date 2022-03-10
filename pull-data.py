@@ -25,7 +25,7 @@ def main():
     # Download Crypto CSV for past 4 years
     df = yf.download(
         "BTC-USD DOGE-USD ETH-USD ADA-USD SOL-USD",
-        start="2018-03-01",
+        start="2018-01-01",
         end="2022-03-01",
         group_by="ticker",
     )
@@ -38,7 +38,7 @@ def main():
     # Download NASDAQ100, S&P, and DOW for comparison
     df = yf.download(
         "^NDX ^GSPC ^DJI",
-        start="2018-03-01",
+        start="2018-01-01",
         end="2022-03-01",
         group_by="ticker",
     )

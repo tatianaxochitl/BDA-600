@@ -11,11 +11,11 @@ def main():
         "stocks/AMZN",
         "stocks/FB",
         "stocks/JPM",
+        "stocks/NFLX",
         "crypto/ADA",
         "crypto/BTC",
         "crypto/DOGE",
         "crypto/ETH",
-        "crypto/SOL",
     ]
     # keyword codes can be taken from the end of the google trends URL you are interested in
     # unable to find good topics/terms for solana so it will be excluded
@@ -25,14 +25,19 @@ def main():
         "/m/0hmyfsv",
         "/m/01hlwv",
         "/m/0svqxy7",
-        "/m/11gf2dcwbj",
+        "/g/11gf2dcwbj",
         "/m/05p0rrx",
         "/m/0zmxk9t",
         "/m/0108bn2x",
     ]
     for x, y in zip(stock_crypto, keywords):
         daily = dailydata.get_daily_data(
-            y, start_year=2018, start_mon=1, stop_year=2022, stop_mon=2
+            y,
+            start_year=2018,
+            start_mon=1,
+            stop_year=2022,
+            stop_mon=2,
+            wait_time=5,
         )
         df = pd.DataFrame(daily)
         df.to_csv(f"data/{x}_trends.csv")
