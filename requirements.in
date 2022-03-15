@@ -3,3 +3,6 @@ pandas
 yfinance
 plotly
 pytrends
+sklearn
+scipy
+arch

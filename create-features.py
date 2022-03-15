@@ -69,31 +69,14 @@ def create_features(df: pd.DataFrame):
     df["Volume Change"] = df["Volume"] - df["Volume"].shift(1)
     df["Volume Change"] = (df["Volume Change"] / (df["Volume"].shift(1))) * 100
 
-    # 7 days standard dev
-    arr_size = df["Close"].size
-    df["7 Day STD DEV"] = ""
-    for x in range(7, arr_size):
-        # find previous index to look at
-        y = x - 7
-        mini_df = df["Close"][y:x]
-        df.loc[x - 1, "7 Day STD DEV"] = mini_df.std()
+    # 5 days standard dev
+    df["5 Day STD DEV"] = df["Day Change"].rolling(5).std()
 
-    # 14 days standard dev
-    df["14 Day STD DEV"] = ""
-    for x in range(14, arr_size):
-        # find previous index to look at
-        y = x - 14
-        mini_df = df["Close"][y:x]
-        df.loc[x - 1, "7 Day STD DEV"] = mini_df.std()
+    # 10 days standard dev
+    df["10 Day STD DEV"] = df["Day Change"].rolling(10).std()
 
-    # 21 days standard dev
-    df["21 Day STD DEV"] = ""
-
-    for x in range(21, arr_size):
-        # find previous index to look at
-        y = x - 21
-        mini_df = df["Close"][y:x]
-        df.loc[x - 1, "7 Day STD DEV"] = mini_df.std()
+    # 15 days standard dev
+    df["15 Day STD DEV"] = df["Day Change"].rolling(10).std()
 
     # shifting columns so that close is our result value
     # and everything else is an estimator that only uses
