@@ -6,12 +6,13 @@ import numpy as np
 import os
 from statsmodels.tsa.stattools import adfuller
 from statsmodels.tsa.seasonal import seasonal_decompose
-from statsmodels.tsa.arima_model import ARIMA
 from pmdarima.arima import auto_arima
+from statsmodels.tsa.arima.model import ARIMA
+from sktime.forecasting.arima import AutoARIMA
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 import math
 
-stockList = ['AAPL', 'TSLA', 'AMZN', 'FB', 'JPM', 'BTC-USD', 'ETH-USD', 'DOGE-USD']
+stockList = ['AAPL', 'TSLA', 'AMZN', 'FB', 'JPM', 'BTC-USD', 'ETH-USD', 'DOGE-USD', "ADA-USD", "SOL-USD"]
 
 # Let us define our start and end time
 startDate = '2018-01-01'
@@ -25,59 +26,64 @@ jpm = yf.Ticker("JPM").history(start=startDate, end=endDate)
 btc = yf.Ticker("BTC-USD").history(start=startDate, end=endDate)
 eth = yf.Ticker("ETH-USD").history(start=startDate, end=endDate)
 doge = yf.Ticker("DOGE-USD").history(start=startDate, end=endDate)
+ada = yf.Ticker("ADA-USD").history(start=startDate, end=endDate)
+sol = yf.Ticker("SOL-USD").history(start=startDate, end=endDate)
 
-# Summary Statistics
-# print(aapl.describe())
+stockNames = [aapl, tsla, amzn, fb, jpm, btc, eth, doge, ada, sol]
 
-stockNames = [aapl, tsla, amzn, fb, jpm, btc, eth, doge]
+for x in stockNames:
+    x['Adj Close'] = x['Close'] - x['Dividends']
 
 # This plots the four year Daily Highs for each of the stocks
 
 for i, x in enumerate(stockNames):
-    plt.subplot(len(stockNames), 2, i + 1)
+    plt.subplot(5, 2, i + 1)
     plt.ylabel('Price in US Dollar')
-    x['High'].plot(figsize=(10, 20), title='Four Year Daily High History: ')
-    break
+    x['High'].plot(figsize=(15, 25), title=f'Four Year Daily High History: {stockList[i]} ')
+    plt.tight_layout()
+plt.savefig('FourYearDailyHigh.png')
 
 # We do the same for the lows
 for i, x in enumerate(stockNames):
     plt.subplot(len(stockNames), 2, i + 1)
     plt.ylabel('Price in US Dollar')
-    x['Low'].plot(figsize=(10, 20), title='Four Year Daily Low History: ')
+    x['Low'].plot(figsize=(10, 20), title=f'Four Year Daily Low History: {stockList[i]} ')
+    plt.tight_layout()
     break
 
 # And again for the Open and Close
 for i, x in enumerate(stockNames):
     plt.subplot(len(stockNames), 2, i + 1)
     plt.ylabel('Price in US Dollar')
-    x['Open'].plot(figsize=(10, 20), title='Four Year Daily Open Price History: ')
+    x['Open'].plot(figsize=(10, 20), title=f'Four Year Daily Open Price History:{stockList[i]} ')
     break
 
 for i, x in enumerate(stockNames):
     plt.subplot(len(stockNames), 2, i + 1)
     plt.ylabel('Price in US Dollar')
-    x['Close'].plot(figsize=(10, 20), title='Four Year Daily Closing Price History: ')
+    x['Close'].plot(figsize=(10, 20), title=f'Four Year Daily Closing Price History: {stockList[i]}')
     break
 
 # Volume traded
 for i, x in enumerate(stockNames):
     plt.subplot(len(stockNames), 2, i + 1)
     plt.ylabel('Volume Traded')
-    x['Volume'].plot(figsize=(10, 20), title='Four Year History of Daily Volume Traded: ')
+    x['Volume'].plot(figsize=(10, 20), title=f'Four Year History of Daily Volume Traded: {stockList[i]}')
     break
 
 # High Minus Low
 for i, x in enumerate(stockNames):
     plt.subplot(len(stockNames), 2, i + 1)
     plt.ylabel('Price in US Dollar')
-    (x['High'] - x['Low']).plot(figsize=(10, 20), title='Four Year Daily High Minus Low Price History: ')
+    (x['High'] - x['Low']).plot(figsize=(10, 20), title=f'Four Year Daily High Minus Low Price History: {stockList[i]}')
     break
 
 # Open-Close
 for i, x in enumerate(stockNames):
     plt.subplot(len(stockNames), 2, i + 1)
     plt.ylabel('Price in US Dollar')
-    (x['Open'] - x['Close']).plot(figsize=(10, 20), title='Four Year Daily Open-Close Difference History: ')
+    (x['Open'] - x['Close']).plot(figsize=(10, 20),
+                                  title=f'Four Year Daily Open-Close Difference History: {stockList[i]}')
     break
 
 # Lets Start looking at the moving averages
@@ -104,6 +110,8 @@ eth.plot(y=['Close', 'Moving Avg for 7 days', 'Moving Avg for 14 days', 'Moving 
 btc.plot(y=['Close', 'Moving Avg for 7 days', 'Moving Avg for 14 days', 'Moving Avg for 21 days'])
 doge.plot(y=['Close', 'Moving Avg for 7 days', 'Moving Avg for 14 days', 'Moving Avg for 21 days'])
 '''
+
+
 # let's look at the ARIMA Model
 # Testing the a distribution of one of the stocks
 aapl.plot(y=['Close'], figsize=(5, 5), kind='kde')
@@ -117,23 +125,10 @@ plt.close()
 - The random variance in the series is referred to as noise.
 '''
 # Using the stored information we have from the previous for loop, we can compare for stationarity
-aapl.plot(y=['Close', 'Moving Avg for 14 days', 'Standard Deviation for 14 days'])
+aapl.plot(y=['Adj Close', 'Moving Avg for 14 days', 'Standard Deviation for 14 days'])
 plt.close()
 
-
 # plt.show()
-
-# Test for stationarity, this will output test statistics
-def test_for_stationarity(closing_stock):
-    print("Results of Dickey Fuller test")
-    adft = adfuller(closing_stock, autolag='AIC')
-    # output for dft will give us without defining what the values are.
-    # hence we manually write what values does it explains using a for loop
-    output = pd.Series(adft[0:4],
-                       index=['Test Statistics', 'p-value', 'No. of lags used', 'Number of observations used'])
-    for key, values in adft[4].items():
-        output['critical value (%s)' % key] = values
-    print(output)
 
 
 '''NOTE: An increasing rolling mean and standard deviation indicate that the series is not stationary.
@@ -144,7 +139,7 @@ undertake time series analysis. We will replicate that deconstruction for one of
 # test_for_stationarity(aapl['Close'])
 
 # We can remove any trend by using the log function
-log_aapl = np.log(aapl['Close'])
+log_aapl = np.log(aapl['Adj Close'])
 
 # Now we can train the ARIMA Model
 # Obviously we must start by splitting the data into train and test
@@ -158,83 +153,7 @@ plt.ylabel('Closing Prices')
 plt.plot(log_aapl, 'green', label='Train data')
 plt.plot(testData, 'blue', label='Test data')
 plt.legend()
-plt.show()
-
-''' The auto ARIMA function returns a fitted ARIMA model after determining optimal parameters
-The function performs these tests: Kwiatkowski–Phillips–Schmidt–Shin, Augmented Dickey-Fuller, or Phillips–Perron
-in order to optimize starting values'''
-
-Auto_ARIMA_Model = auto_arima(trainData, start_p=0, start_q=0,
-                              test='adf',        # use adftest to find optimal 'd'
-                              max_p=3, max_q=3,  # maximum p and q
-                              m=1,               # frequency of series
-                              d=None,            # let model determine 'd'
-                              seasonal=False,    # No Seasonality
-                              start_P=0,
-                              D=0,
-                              trace=True,
-                              error_action='ignore',
-                              suppress_warnings=True,
-                              stepwise=True)
-print(Auto_ARIMA_Model.summary())
-Auto_ARIMA_Model.plot_diagnostics(figsize=(15, 8))
-plt.show()
-
-'''
-# We can start by looking at the Daily Highs for the desired time period
-for i, ticker in enumerate(stockList):
-    current_ticker = yf.Ticker(ticker)
-    plt.subplot(len(stockList), 2, i + 1)
-    plt.ylabel('Price in USD')
-    current_ticker.history(start=startDate, end=endDate)['High'].plot(
-        figsize=(10, 20), title='Four Year History of Daily Highs: ' + ticker)
-    break
-
-# Code in somthing that will allow us to save all of the figures from the for loops
-# plt.tight_layout(pad=3)
 # plt.show()
 
-# Now we can look at the lows
-for i, ticker in enumerate(stockList):
-    current_ticker = yf.Ticker(ticker)
-    plt.subplot(len(stockList), 2, i + 1)
-    plt.ylabel('Price in USD')
-    current_ticker.history(start=startDate, end=endDate)['Low'].plot(
-        figsize=(10, 20), title='Four Year History of Daily Lows: ' + ticker)
-    break
-
-# Open and Close Prices
-for i, ticker in enumerate(stockList):
-    current_ticker = yf.Ticker(ticker)
-    plt.subplot(len(stockList), 2, i + 1)
-    plt.ylabel('Price in USD')
-    current_ticker.history(start=startDate, end=endDate)['Open'].plot(
-        figsize=(10, 20), title='Four Year History of Open Prices: ' + ticker)
-    break
-
-for i, ticker in enumerate(stockList):
-    current_ticker = yf.Ticker(ticker)
-    plt.subplot(len(stockList), 2, i + 1)
-    plt.ylabel('Price in USD')
-    current_ticker.history(start=startDate, end=endDate)['Close'].plot(
-        figsize=(10, 20), title='Four Year History of Closing Prices: ' + ticker)
-    break
-
-# Volume
-for i, ticker in enumerate(stockList):
-    current_ticker = yf.Ticker(ticker)
-    plt.subplot(len(stockList), 2, i + 1)
-    plt.ylabel('Market Volume')
-    current_ticker.history(start=startDate, end=endDate)['Volume'].plot(
-        figsize=(10, 20), title='Four Year History of Volume: ' + ticker)
-    break
-
-# The difference in highs and lows for each stock over the four year period
-for i, ticker in enumerate(stockList):
-    current_ticker = yf.Ticker(ticker)
-    plt.subplot(len(stockList), 2, i + 1)
-    plt.ylabel('Price in USD')
-    (current_ticker.history(start=startDate, end=endDate)['High'] - current_ticker.history(
-        start=startDate, end=endDate)['Low']).plot(figsize=(20, 60), title='Four Year History (High - Low): ' + ticker)
-    break
-'''
+# Modeling
+# Build Model
