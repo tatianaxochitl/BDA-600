@@ -22,7 +22,12 @@ repos:
     rev: "v2.3.2" # Use the sha or tag you want to point at
     hooks:
       - id: prettier
-        exclude: ^docs/plots/
+        exclude: >
+          (?x)^(
+            docs/plots/|
+            docs/includes/header.html|
+            docs/includes/footer.html
+          )$
 
   - repo: git@github.com:Yelp/detect-secrets
     rev: v1.1.0
