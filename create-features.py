@@ -1,5 +1,6 @@
 import sys
 
+import numpy as np
 import pandas as pd
 
 
@@ -45,6 +46,18 @@ def main():
 
 # create new features
 def create_features(df: pd.DataFrame):
+    # Drop na values
+    # log of returns calculations for GARCH
+    df = df.dropna()
+    df["Log Returns"] = np.log(df["Adj Close"] / (df["Adj Close"].shift(-1)))
+    df["Sq Returns"] = df["Log Returns"] ** 2
+
+    df["Variance (5 Day)"] = df["Sq Returns"].rolling(5).std()
+    df["Variance (21 Day)"] = df["Sq Returns"].rolling(21).std()
+    df["Variance (63 Day)"] = df["Sq Returns"].rolling(63).std()
+    df["Volatility (5 Day)"] = np.sqrt(df["Variance (5 Day)"])
+    df["Volatility (21 Day)"] = np.sqrt(df["Variance (21 Day)"])
+    df["Volatility (63 Day)"] = np.sqrt(df["Variance (63 Day)"])
 
     # High Minus Low
     df["High Minus Low"] = df["High"] - df["Low"]
@@ -52,31 +65,32 @@ def create_features(df: pd.DataFrame):
     # Close Minus Open
     df["Close Minus Open"] = df["Close"] - df["Open"]
 
-    # 7 day Moving average for close
-    df["7 day MA"] = df["Close"].rolling(7).mean()
+    # 5 day Moving average for close
+    df["5 day MA"] = df["Adj Close"].rolling(5).mean()
 
-    # 14 day Moving average for close
-    df["14 day MA"] = df["Close"].rolling(14).mean()
+    # 10 day Moving average for close
+    df["10 day MA"] = df["Adj Close"].rolling(10).mean()
 
-    # 21 day Moving average for close
-    df["21 day MA"] = df["Close"].rolling(21).mean()
-
-    # Day Change in Close price
-    df["Day Change"] = df["Close"] - df["Close"].shift(1)
-    df["Day Change"] = (df["Day Change"] / (df["Close"].shift(1))) * 100
+    # 15 day Moving average for close
+    df["15 day MA"] = df["Adj Close"].rolling(15).mean()
 
     # Day Change in Close price
-    df["Volume Change"] = df["Volume"] - df["Volume"].shift(1)
-    df["Volume Change"] = (df["Volume Change"] / (df["Volume"].shift(1))) * 100
+    df["Day Change"] = df["Adj Close"].pct_change() * 100
+
+    # Day Change in Volume price
+    df["Volume Change"] = df["Volume"].pct_change() * 100
 
     # 5 days standard dev
+    # One trading week
     df["5 Day STD DEV"] = df["Day Change"].rolling(5).std()
 
-    # 10 days standard dev
-    df["10 Day STD DEV"] = df["Day Change"].rolling(10).std()
+    # 21 days standard dev
+    # One trading month
+    df["21 Day STD DEV"] = df["Day Change"].rolling(21).std()
 
-    # 15 days standard dev
-    df["15 Day STD DEV"] = df["Day Change"].rolling(10).std()
+    # 63 days standard dev
+    # 3 months
+    df["63 Day STD DEV"] = df["Day Change"].rolling(63).std()
 
     # shifting columns so that close is our result value
     # and everything else is an estimator that only uses
@@ -89,14 +103,16 @@ def shift_columns(df: pd.DataFrame):
     df["Date"] = df["Date"].shift(-1)
     df = df.rename(
         columns={
-            "Close": "Previous Close",
+            "Adj Close": "Previous Close",
             "Open": "Previous Open",
             "Volume": "Previous Volume",
             "High": "Previous High",
             "Low": "Previous Low",
+            "Day Change": "Previous Day Change",
         }
     )
-    df["Close"] = df["Previous Close"].shift(1)
+    df["Adj Close"] = df["Previous Close"].shift(1)
+    df["Day Change"] = df["Previous Day Change"].shift(1)
     df.drop(columns="Adj Close")
     return df
 
