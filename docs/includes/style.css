@@ -17,6 +17,7 @@ header {
 main {
   width: 50%;
   padding-right: 25%;
+  float: left;
 }
 
 /* Style the footer */
