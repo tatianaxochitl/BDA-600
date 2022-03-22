@@ -15,8 +15,8 @@ header {
 }
 
 main {
-  width: 50%;
-  padding-right: 25%;
+  width: 60%;
+  padding-top: 10px;
   float: left;
 }
 
@@ -29,8 +29,8 @@ footer {
 }
 
 .vertical-menu {
-  width: 23%;
-  padding-right: 2%;
+  width: 20%;
+  padding-right: 10px;
   float: left;
 }
 
