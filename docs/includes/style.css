@@ -15,7 +15,8 @@ header {
 }
 
 main {
-  width: 800px;
+  width: 50%;
+  padding-right: 25%;
 }
 
 /* Style the footer */
@@ -26,7 +27,9 @@ footer {
 }
 
 .vertical-menu {
-  width: 200px;
+  width: 23%;
+  padding-right: 2%;
+  float: left;
 }
 
 .vertical-menu a {
