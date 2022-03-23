@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>SVR-GARCH and ANN-GARCH Analysis</title>
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+    <script>
+      $(function () {
+        $("#header").load("includes/header.html");
+        $("#footer").load("includes/footer.html");
+        $("#AAPL5").load(
+          "plots/AAPL_features_Volatility (5 Day)_GARCH_Prediction.html"
+        );
+        $("#AAPL21").load(
+          "plots/AAPL_features_Volatility (21 Day)_GARCH_Prediction.html"
+        );
+        $("#AAPL63").load(
+          "plots/AAPL_features_Volatility (63 Day)_GARCH_Prediction.html"
+        );
+        $("#AMZNL5").load(
+          "plots/AMZN_features_Volatility (5 Day)_GARCH_Prediction.html"
+        );
+        $("#AMZN21").load(
+          "plots/AMZN_features_Volatility (21 Day)_GARCH_Prediction.html"
+        );
+        $("#AMZN63").load(
+          "plots/AMZN_features_Volatility (63 Day)_GARCH_Prediction.html"
+        );
+        $("#FB5").load(
+          "plots/FB_features_Volatility (5 Day)_GARCH_Prediction.html"
+        );
+        $("#FB21").load(
+          "plots/FB_features_Volatility (21 Day)_GARCH_Prediction.html"
+        );
+        $("#FB63").load(
+          "plots/FB_features_Volatility (63 Day)_GARCH_Prediction.html"
+        );
+        $("#JPM5").load(
+          "plots/JPM_features_Volatility (5 Day)_GARCH_Prediction.html"
+        );
+        $("#JPM21").load(
+          "plots/JPM_features_Volatility (21 Day)_GARCH_Prediction.html"
+        );
+        $("#JPM63").load(
+          "plots/JPM_features_Volatility (63 Day)_GARCH_Prediction.html"
+        );
+        $("#NFLX5").load(
+          "plots/NFLX_features_Volatility (5 Day)_GARCH_Prediction.html"
+        );
+        $("#NFLX21").load(
+          "plots/NFLX_features_Volatility (21 Day)_GARCH_Prediction.html"
+        );
+        $("#NFLX63").load(
+          "plots/NFLX_features_Volatility (63 Day)_GARCH_Prediction.html"
+        );
+        $("#ADA5").load(
+          "plots/ADA_features_Volatility (5 Day)_GARCH_Prediction.html"
+        );
+        $("#ADA21").load(
+          "plots/ADA_features_Volatility (21 Day)_GARCH_Prediction.html"
+        );
+        $("#ADA63").load(
+          "plots/ADA_features_Volatility (63 Day)_GARCH_Prediction.html"
+        );
+        $("#BTC5").load(
+          "plots/BTC_features_Volatility (5 Day)_GARCH_Prediction.html"
+        );
+        $("#BTC21").load(
+          "plots/BTC_features_Volatility (21 Day)_GARCH_Prediction.html"
+        );
+        $("#BTC63").load(
+          "plots/BTC_features_Volatility (63 Day)_GARCH_Prediction.html"
+        );
+        $("#DOGE5").load(
+          "plots/DOGE_features_Volatility (5 Day)_GARCH_Prediction.html"
+        );
+        $("#DOGE21").load(
+          "plots/DOGE_features_Volatility (21 Day)_GARCH_Prediction.html"
+        );
+        $("#DOGE63").load(
+          "plots/DOGE_features_Volatility (63 Day)_GARCH_Prediction.html"
+        );
+        $("#ETH5").load(
+          "plots/ETH_features_Volatility (5 Day)_GARCH_Prediction.html"
+        );
+        $("#ETH21").load(
+          "plots/ETH_features_Volatility (21 Day)_GARCH_Prediction.html"
+        );
+        $("#ETH63").load(
+          "plots/ETH_features_Volatility (63 Day)_GARCH_Prediction.html"
+        );
+        $("#SOL5").load(
+          "plots/SOL_features_Volatility (5 Day)_GARCH_Prediction.html"
+        );
+        $("#SOL21").load(
+          "plots/SOL_features_Volatility (21 Day)_GARCH_Prediction.html"
+        );
+        $("#SOL63").load(
+          "plots/SOL_features_Volatility (63 Day)_GARCH_Prediction.html"
+        );
+      });
+    </script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="includes/style.css" />
+    <body>
+      <div id="header"></div>
+      <main>
+        <h1>SVR-GARCH and ANN-GARCH Analysis</h1>
+        <h2>GARCH</h2>
+        <p>
+          <strong>G</strong>eneralized <strong>A</strong>utoregressive
+          <strong>C</strong>onditional <strong>H</strong>eteroskedasticity or
+          <strong>GARCH</strong> is used to model and predict volitlity in
+          financial time series data. The formula is as follows:
+        </p>
+        <p style="text-align: center">
+          <em
+            >σ<sup>2</sup><sub>t</sub> = ω + αε<sup>2</sup><sub>t-1</sub> +
+            βσ<sup>2</sup><sub>t-1</sub>
+          </em>
+        </p>
+        <p>
+          <em>σ<sup>2</sup><sub>t</sub></em> represents the volitlity,
+          <em>ε<sup>2</sup><sub>t-1</sub></em> is the square of returns from the
+          previous observation, and <em>σ<sup>2</sup><sub>t-1</sub></em> is the
+          volitlity of the previous observation. <em>ω</em>, <em>α</em>, and
+          <em>β</em> are all parameters calculated by looking at previous
+          observations. After seeing the accuracy of volatility predictions in
+          other papers using SVR-GARCH and ANN-GARCH [add citation], we based
+          our implementations of SVR-GARCH and ANN-GARCH after those in
+          <em>Machine Learning for Financial Risk Management</em> by Abdullah
+          Karasan. For the time period of volitility, we looked at the 5 day, 21
+          day, and 63 day volitility, which in terms of stocks are a week, one
+          month, and three months.
+        </p>
+        <h2>SVR-GARCH</h2>
+        <p>
+          SVR-GARCH is using Support Vector Regression in order to solve for the
+          volitlity. With SVR we use the same variables of the previous
+          observations in order to solve for the current, but allow SVR to solve
+          for the equation that will predict the next observation. We only had
+          to find the best hyperparameters for our model by using GridSearch.
+        </p>
+        <h2>ANN-GARCH</h2>
+        <p>
+          ANN-GARCH is very similar to SVR-GARCH in that we give the model the
+          same variables, but allow for it to solve for the equation and create
+          predictions. We again tuned the hyperparameters using GridSearch to
+          find what is the best fit model.
+        </p>
+        <h2>SVR vs ANN</h2>
+        <p>
+          To test which model was more accurate we modeled on the first 80% of
+          observations, and then tested the predictions against the last 20% of
+          the data. We then took the Root Mean Square Error (RMSE) between the
+          obsevations and predictions for each model, so the lower the error
+          rate the more accurate the model. The models for SVR-GARCH proved to
+          be more accurate than those of ANN-GARCH.
+        </p>
+        <h2>Plots</h2>
+        <h3>AAPL (Apple)</h3>
+        <div id="AAPL5"></div>
+        <div id="AAPL21"></div>
+        <div id="AAPL63"></div>
+        <h3>AMZN (Amazon)</h3>
+        <div id="AMZN5"></div>
+        <div id="AMZN21"></div>
+        <div id="AMZN63"></div>
+        <h3>FB (Meta)</h3>
+        <div id="FB5"></div>
+        <div id="FB21"></div>
+        <div id="FB63"></div>
+        <h3>JPM (J.P. Morgan Chase & Co)</h3>
+        <div id="JPM5"></div>
+        <div id="JPM21"></div>
+        <div id="JPM63"></div>
+        <h3>NFLX (Netflix)</h3>
+        <div id="NFLX5"></div>
+        <div id="NFLX21"></div>
+        <div id="NFLX63"></div>
+        <h3>ADA (Cardano)</h3>
+        <div id="ADA5"></div>
+        <div id="ADA21"></div>
+        <div id="ADA63"></div>
+        <h3>BTC (Bitcoin)</h3>
+        <div id="BTC5"></div>
+        <div id="BTC21"></div>
+        <div id="BTC63"></div>
+        <h3>DOGE (Dogecoin)</h3>
+        <div id="DOGE5"></div>
+        <div id="DOGE21"></div>
+        <div id="DOGE63"></div>
+        <h3>ETH (Ethereum)</h3>
+        <div id="ETH5"></div>
+        <div id="ETH21"></div>
+        <div id="ETH63"></div>
+        <h3>Solana</h3>
+        <div id="SOL5"></div>
+        <div id="SOL21"></div>
+        <div id="SOL63"></div>
+      </main>
+      <div id="footer"></div>
+    </body>
+  </head>
+</html>
