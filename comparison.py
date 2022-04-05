@@ -53,8 +53,8 @@ def main():
         for fa1, fa2 in fa_list:
             # Plotting
             filename = linear_regression(df, fa1, fa2)
-            lr_matrix.at[fa1, fa2] = filename
-            lr_matrix.at[fa1, fa2] = filename
+            lr_matrix.at[fa1, fa2] = "docs/plots/" + filename
+            lr_matrix.at[fa2, fa1] = "docs/plots/" + filename
             # Correlation Stats
             cont_cont_corr, p = stats.pearsonr(df[fa1], df[fa2])
             # Put value in correlation matrix
@@ -109,7 +109,7 @@ def main():
         # Write out HTML file
         with open(f"{fac_list[i]}_corr_matrix.html", "w") as f:
             f.write(html_str)
-        i = +1
+        i = i + 1
 
 
 if __name__ == "__main__":
