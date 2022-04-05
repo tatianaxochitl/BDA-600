@@ -113,7 +113,6 @@ def shift_columns(df: pd.DataFrame):
     )
     df["Adj Close"] = df["Previous Close"].shift(1)
     df["Day Change"] = df["Previous Day Change"].shift(1)
-    df.drop(columns="Adj Close")
     return df
 
 

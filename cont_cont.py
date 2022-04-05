@@ -18,7 +18,7 @@ def linear_regression(df, predictor, response):
     t_value = round(linear_regression_model_fitted.tvalues[1], 6)
     p_value = "{:.6e}".format(linear_regression_model_fitted.pvalues[1])
 
-    filename = f"plots/{predictor}_{response}_linear_regression.html"
+    filename = f"{predictor}_{response}_linear_regression.html"
 
     # Plot the figure
     fig = px.scatter(
