@@ -7,6 +7,9 @@
       $(function () {
         $("#header").load("includes/header.html");
         $("#footer").load("includes/footer.html");
+        $("#adj-matrix").load("plots/adj_close_corr_matrix.html");
+        $("#log-matrix").load("plots/adj_close_corr_matrix.html");
+        $("#vol-matrix").load("plots/adj_close_corr_matrix.html");
       });
     </script>
     <meta charset="utf-8" />
@@ -16,6 +19,22 @@
       <div id="header"></div>
       <main>
         <h1>Correlation Findings</h1>
+        <p>
+          For correlation we decided to look at the features of price, log
+          returns, and volatility to see if there is a commonality between the
+          financial assets in terms of any of these. To analyze this we used
+          linear regression for each pair and created a heatmap based on
+          Pearson's r between the two assets being compared.
+        </p>
+        <h2>Pearson's R and Linear Regression</h2>
+        For each heatmap please click the cell where two assets intersect in
+        order to view the linear regression plot.
+        <h3>Adjusted Close Price</h3>
+        <div id="adj-matrix"></div>
+        <h3>Log Returns</h3>
+        <div id="log-matrix"></div>
+        <h3>Volatility</h3>
+        <div id="vol-matrix"></div>
       </main>
       <div id="footer"></div>
     </body>
