@@ -40,7 +40,6 @@ def main():
         log_returns[fa_name] = df["Log Returns"]
         volatility[fa_name] = df["Volatility (5 Day)"]
 
-    fa_list = itertools.combinations(adj_close.columns, 2)
     fac_list = ["adj_close", "log_returns", "volatility"]
     i = 0
 
@@ -50,11 +49,12 @@ def main():
         df = df.dropna()
         corr_matrix = pd.DataFrame(columns=adj_close.columns, index=adj_close.columns)
         lr_matrix = pd.DataFrame(columns=adj_close.columns, index=adj_close.columns)
+        fa_list = itertools.combinations(adj_close.columns, 2)
         for fa1, fa2 in fa_list:
             # Plotting
             filename = linear_regression(df, fa1, fa2)
-            lr_matrix.at[fa1, fa2] = "docs/plots/" + filename
-            lr_matrix.at[fa2, fa1] = "docs/plots/" + filename
+            lr_matrix.at[fa1, fa2] = "plots/" + filename
+            lr_matrix.at[fa2, fa1] = "plots/" + filename
             # Correlation Stats
             cont_cont_corr, p = stats.pearsonr(df[fa1], df[fa2])
             # Put value in correlation matrix
