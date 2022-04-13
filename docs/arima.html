@@ -15,9 +15,58 @@
     <body>
       <div id="header"></div>
       <main>
-        <h1>ARIMA</h1>
-      </main>
-      <div id="footer"></div>
+        <h1>ARIMA Model</h1>
+        <p>
+          <strong>A</strong>uto <strong>R</strong>egressive
+          <strong>I</strong>ntegrated <strong>M</strong>oving <strong>A</strong>verage, also known as
+          <strong>ARIMA</strong> is a model primarily used for time series forecasting. The model focuses
+          on Autocorrelations in the data, which is the degree of similarity
+          between a time series and a lagged version of itself over succesive time intervals.
+
+
+
+        </p>
+        <h2>Three Variables to Account for:</h2>
+        <p>
+          <strong>P</strong> = The periods of lag used. For example, P = 5 would use five previous periods of the time series
+          in the Auto Regressive portion of the model.
+        <br>
+        <br>
+          Note: A purely Auto Regressive model will look more like a linear regression.
+        <br>
+        <br>
+          <strong>D</strong> = The number of differencing transformations used to make the 
+          tim series stationary.
+        <br>
+        <br>
+          Note: When it comes to predictive modeling of time series data, Stationarity is the idea that the 
+          mean and the variance are constant over time. This makes for easier prediction. The process of "differencing" starts by taking the difference of the 
+          current and previous time periods. If the resulting values do not center around a constant mean or variance, then
+          differencing is continued using the previous period and the first difference.
+        <br>
+        <br>
+          <strong>Q</strong> = The lag of error component where the component is a part of the time series not
+          explained by trend or seasonality.
+        <br>
+        <br>
+          Note: 
+        </p>
+        <h2>ADF & KPSS</h2>
+        <p>
+        Info on ADF & KPSS
+        </p>
+        <h2>ACF & PACF</h2>
+        <p>
+        Info on ACF & PACF
+        </p>
+        <h2>Forecasting</h2>
+        <p>
+        Info on Forecasting
+        </p>
+        <h2>Plots of Forecasts</h2>
+        <p>
+        Plots
+        </p>  
     </body>
   </head>
 </html>
