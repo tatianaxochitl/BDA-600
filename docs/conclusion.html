@@ -7,6 +7,12 @@
       $(function () {
         $("#header").load("includes/header.html");
         $("#footer").load("includes/footer.html");
+        $("#HistOpen").load("plots/HistoricalDailyOpen.html");
+        $("#HistClose").load("plots/HistoricalDailyClose.html");
+        $("#OpenClose").load("plots/HistoricalOpenCloseDiff.html");
+        $("#HistHigh").load("plots/HistoricalDailyHigh.html");
+        $("#HistLow").load("plots/HistoricalDailyLow.html");
+        $("#HistVolume").load("plots/HistoricalVolumeTraded.html");
       });
     </script>
     <meta charset="utf-8" />
@@ -16,6 +22,20 @@
       <div id="header"></div>
       <main>
         <h1>Conclusion</h1>
+        <br />
+        <h2>Plots that helped with investigation</h2>
+        <h3>Historical Daily Opening Prices</h3>
+        <div id="HistOpen"></div>
+        <h3>Historical Daily Closing Prices</h3>
+        <div id="HistClose"></div>
+        <h3>Historical Daily Open/Close Difference</h3>
+        <div id="OpenClose"></div>
+        <h3>Historical Daily High</h3>
+        <div id="HistHigh"></div>
+        <h3>Historical Daily Low</h3>
+        <div id="HistLow"></div>
+        <h3>Historical Daily Volume Traded</h3>
+        <div id="HistVolume"></div>
       </main>
       <div id="footer"></div>
     </body>
