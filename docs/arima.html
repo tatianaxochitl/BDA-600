@@ -7,6 +7,42 @@
       $(function () {
         $("#header").load("includes/header.html");
         $("#footer").load("includes/footer.html");
+        $("#AppleF").load(
+        "plots/Apple30DayForecast.html"
+        );
+        $("#AmazonF").load(
+        "plots/Amazon30DayForecast.html"
+        );
+        $("#FacebookF").load(
+        "plots/Facebook30DayForecast.html"
+        );
+        $("#TeslaF").load(
+        "plots/Tesla30DayForecast.html"
+        );
+        $("#JPMF").load(
+        "plots/JPM30DayForecast.html"
+        );
+        $("#BitcoinF").load(
+        "plots/Bitcoin30DayForecast.html"
+        );
+        $("#EtherumF").load(
+        "plots/Etherum30DayForecast.html"
+        );
+        $("#CardanoF").load(
+        "plots/Cardano30DayForecast.html"
+        );
+        $("#SolanaF").load(
+        "plots/Solana30DayForecast.html"
+        );
+        $("#DogeF").load(
+        "plots/Doge30DayForecast.html"
+        );
+        $("#AutoCorr").load(
+        "plots/AutoCorr.html"
+        );
+        $("#PAutoCorr").load(
+        "plots/PartAutoCorr.html"
+        );
       });
     </script>
     <meta charset="utf-8" />
@@ -47,7 +83,6 @@
           explained by trend or seasonality.
         <br>
         <br>
-          Note: 
         </p>
         <h2>ADF</h2>
         <p>
@@ -60,7 +95,7 @@
         <br><br>
         If the time series is non stationary we can adjust the D parameter by 1 to difference the data.
         <br><br>
-        When conducting this test on Apple's Adjusted Closing Price time series, the resulting output:
+        When conducting this test on Apple's Adjusted Closing Price time series, the resulting output tells us that the series in non stationary and we should adjust the D paramter. We will use a one time difference (1):
         <br><br>
         1. ADF :  0.18009757213664973<br>
         2. P-Value :  0.9711229737500696<br>
@@ -70,8 +105,7 @@
         &emsp; &emsp;  1% :  -3.4367396063176874<br>
         &emsp; &emsp;  5% :  -2.8643611157329905<br>
         &emsp; &emsp;  10% :  -2.5682720836420705<br>
-   <br><br>
-   tells us that the series in non stationary and we should adjust the D paramter. We will use a one time difference (1).
+        <br><br>
         </p>
         <h2>ACF & PACF</h2>
         <p>
@@ -80,12 +114,14 @@
         y-axis is the number of lags.<br><br>
         If there is a Positive autocorrelation at lag 1 then we use the AR model<br>
         If there is a Negative autocorrelation at lag 1 then we use the MA model<br><br>
+        <div id="AutoCorr"></div> <br>
         As you can see with the lags of the Apple Close Prices, there is a positive autocorrelation
         at lag 1 so we will use the AR model. <br><br>Now we can look at the PACF (Partial AutoCorrelation Function Plot) which
         summarizes the relationships between an observation in the time series and observations at prior steps 
         with the relationships of intervening observations removed. <br><br>
         If the plot drops off at a certain lag then you will use the AR(n) model; if the drop is more gradual
         then you will use the MA model.<br><br>
+        <div id="PAutoCorr"></div> <br>
         As you can see from the PACF of Apple, we should be using the AR(1) model as a parameter.
         </p>
         <h2>Forecasting</h2>
@@ -97,10 +133,28 @@
         just discovered (1, 1, 0) to fit the model. Below you see a 30 day forecast for Apple laid over the actual prices on those same days. What we observed is that
         the prediction model does not fully coincide with the actual values but seemed to be very accurate with up and down trends in the time series.
         </p>
+        <div id="AppleF"></div> <br><br>
         <h2>Plots of Forecasts</h2>
-        <p>
-        Plots
-        </p>  
+        <p> 
+        <h3>Amazon</h3>
+        <div id="AmazonF"></div>
+        <h3>Facebook</h3>
+        <div id="FacebookF"></div>
+        <h3>JP Morgan</h3>
+        <div id="JPMF"></div>
+        <h3>Tesla</h3>
+        <div id="TeslaF"></div>
+        <h3>Bitcoin</h3>
+        <div id="BitcoinF"></div>
+        <h3>Etherum</h3>
+        <div id="EtherumF"></div>
+        <h3>Cardano</h3>
+        <div id="CardanoF"></div>
+        <h3>Solana</h3>
+        <div id="SolanaF"></div>
+        <h3>Doge</h3>
+        <div id="DogeF"></div>
+        </p>
     </body>
   </head>
 </html>
