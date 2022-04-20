@@ -13,6 +13,16 @@
         $("#HistHigh").load("plots/HistoricalDailyHigh.html");
         $("#HistLow").load("plots/HistoricalDailyLow.html");
         $("#HistVolume").load("plots/HistoricalVolumeTraded.html");
+        $("#MAApple").load("plots/MovingAverageApple.html");
+        $("#MAAmazon").load("plots/MovingAverageAmazon.html");
+        $("#MAFacebook").load("plots/MovingAverageFacebook.html");
+        $("#MAJPM").load("plots/MovingAverageJPMorgan.html");
+        $("#MATesla").load("plots/MovingAverageTesla.html");
+        $("#MABitcoin").load("plots/MovingAverageBitcoin.html");
+        $("#MAEtherum").load("plots/MovingAverageEtherum.html");
+        $("#MACardano").load("plots/MovingAverageCardano.html");
+        $("#MADoge").load("plots/MovingAverageDoge.html");
+        $("#MASolana").load("plots/MovingAverageSolana.html");
       });
     </script>
     <meta charset="utf-8" />
@@ -24,6 +34,7 @@
         <h1>Conclusion</h1>
         <br />
         <h2>Plots that helped with investigation</h2>
+        <br />
         <h3>Historical Daily Opening Prices</h3>
         <div id="HistOpen"></div>
         <h3>Historical Daily Closing Prices</h3>
@@ -36,6 +47,34 @@
         <div id="HistLow"></div>
         <h3>Historical Daily Volume Traded</h3>
         <div id="HistVolume"></div>
+        <h2>Plots that tell us initial pricing trends</h2>
+        <br />
+        <p>
+          All of the following moving average figures provide insight on what
+          the long term trend is for each stock/crypto. Specifically for the
+          ARIMA and GARCH models these models can be leveraged when deciding
+          what paramter to choose from, providing information on the lags used.
+        </p>
+        <h3>Moving Averages of Apple</h3>
+        <div id="MAApple"></div>
+        <h3>Moving Averages of Amazon</h3>
+        <div id="MAAmazon"></div>
+        <h3>Moving Averages of Tesla</h3>
+        <div id="MATesla"></div>
+        <h3>Moving Averages of Facebook</h3>
+        <div id="MAFacebook"></div>
+        <h3>Moving Averages of JP Morgan</h3>
+        <div id="MAJPM"></div>
+        <h3>Moving Averages of Bitcoin</h3>
+        <div id="MABitcoin"></div>
+        <h3>Moving Averages of Etherum</h3>
+        <div id="MAEtherum"></div>
+        <h3>Moving Averages of Cardano</h3>
+        <div id="MACardano"></div>
+        <h3>Moving Averages of Solana</h3>
+        <div id="MASolana"></div>
+        <h3>Moving Averages of Doge Coin</h3>
+        <div id="MADoge"></div>
       </main>
       <div id="footer"></div>
     </body>
