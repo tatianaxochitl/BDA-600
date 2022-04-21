@@ -84,6 +84,7 @@
         <br>
         <br>
         </p>
+        <h2>Manual Process of Learning Parameters</h2>
         <h2>ADF</h2>
         <p>
         The ADF (Augmented Dickey Fuller Test) was the first step in the manual process of determining the 
@@ -93,9 +94,9 @@
         <br>
         P > 0.05 then not stationary
         <br><br>
-        If the time series is non stationary we can adjust the D parameter by 1 to difference the data.
+        If the time series is non stationary we can adjust the <strong>D</strong> parameter by 1 to difference the data.
         <br><br>
-        When conducting this test on Apple's Adjusted Closing Price time series, the resulting output tells us that the series in non stationary and we should adjust the D paramter. We will use a one time difference (1):
+        When conducting this test on Apple's Adjusted Closing Price time series, the resulting output tells us that the series in non stationary and we should adjust the <strong>D</strong> paramter. We will use a one time difference (1):
         <br><br>
         1. ADF :  0.18009757213664973<br>
         2. P-Value :  0.9711229737500696<br>
@@ -128,10 +129,10 @@
         <h3>Apple - ARIMA (1,1,0)</h3>
         <p>
         Now with the stationarity and autocorrelation information taken care of we have our three parmeters for the ARIMA model.
-        We have 1 for our P parameter (ACF & PACF) and 1 for our D parameter (Stationarity). We leave the Q parameter at 0 since we 
+        We have <strong>1</strong> for our <strong>P</strong> parameter (ACF & PACF) and <strong>1</strong> for our <strong>D</strong> parameter (Stationarity). We leave the <strong>Q</strong> parameter at <strong>0</strong> since we 
         have decided to use the AutoRegressive model over the Moving Average model based off of ACF and PACF tests.<br><br>
         After splitting the time series into training and test sets, we can use the ARIMA function in Python combined with the order (parameters) we
-        just discovered (1, 1, 0) to fit the model. Below you see a 30 day forecast for Apple laid over the actual prices on those same days. What we observed is that
+        just discovered <strong>(1, 1, 0)</strong> to fit the model. Below you see a 30 day forecast for Apple laid over the actual prices on those same days. What we observed is that
         the prediction model does not fully coincide with the actual values but seemed to be very accurate with up and down trends in the time series.
         </p>
         <div id="AppleF"></div> <br><br>
