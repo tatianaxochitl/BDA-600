@@ -15,7 +15,7 @@ def main():
         "data/stocks/AMZN.csv",
         "data/stocks/FB.csv",
         "data/stocks/JPM.csv",
-        "data/stocks/NFLX.csv",
+        "data/stocks/TSLA.csv",
     ]
     idx_files = ["data/DJI.csv", "data/GSPC.csv", "data/NDX.csv"]
 

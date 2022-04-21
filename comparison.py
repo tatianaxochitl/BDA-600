@@ -22,7 +22,7 @@ def main():
         "data/stocks/AMZN_features.csv",
         "data/stocks/FB_features.csv",
         "data/stocks/JPM_features.csv",
-        "data/stocks/NFLX_features.csv",
+        "data/stocks/TSLA_features.csv",
         "data/DJI_features.csv",
         "data/GSPC_features.csv",
         "data/NDX_features.csv",
@@ -60,6 +60,7 @@ def main():
             # Put value in correlation matrix
             corr_matrix.at[fa1, fa2] = cont_cont_corr
             corr_matrix.at[fa2, fa1] = cont_cont_corr
+
         corr_matrix = corr_matrix.fillna(value=1)
         fig = px.imshow(
             corr_matrix.values,

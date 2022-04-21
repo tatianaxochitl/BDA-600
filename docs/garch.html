@@ -16,7 +16,7 @@
         $("#AAPL63").load(
           "plots/AAPL_features_Volatility%20(63%20Day)_GARCH_Prediction.html"
         );
-        $("#AMZNL5").load(
+        $("#AMZN5").load(
           "plots/AMZN_features_Volatility%20(5%20Day)_GARCH_Prediction.html"
         );
         $("#AMZN21").load(
@@ -43,14 +43,14 @@
         $("#JPM63").load(
           "plots/JPM_features_Volatility%20(63%20Day)_GARCH_Prediction.html"
         );
-        $("#NFLX5").load(
-          "plots/NFLX_features_Volatility%20(5%20Day)_GARCH_Prediction.html"
+        $("#TSLA5").load(
+          "plots/TSLA_features_Volatility%20(5%20Day)_GARCH_Prediction.html"
         );
-        $("#NFLX21").load(
-          "plots/NFLX_features_Volatility%20(21%20Day)_GARCH_Prediction.html"
+        $("#TSLA21").load(
+          "plots/TSLA_features_Volatility%20(21%20Day)_GARCH_Prediction.html"
         );
-        $("#NFLX63").load(
-          "plots/NFLX_features_Volatility%20(63%20Day)_GARCH_Prediction.html"
+        $("#TSLA63").load(
+          "plots/TSLA_features_Volatility%20(63%20Day)_GARCH_Prediction.html"
         );
         $("#ADA5").load(
           "plots/ADA_features_Volatility%20(5%20Day)_GARCH_Prediction.html"
@@ -140,13 +140,18 @@
           observations in order to solve for the current, but allow SVR to solve
           for the equation that will predict the next observation. We only had
           to find the best hyperparameters for our model by using GridSearch.
+          The hyperparameters that were used for SVR were uing the Linear Kernel
+          with a gamma value of 1e-08, C value of 1000, and an epsilon value of
+          .001.
         </p>
         <h2>ANN-GARCH</h2>
         <p>
           ANN-GARCH is very similar to SVR-GARCH in that we give the model the
           same variables, but allow for it to solve for the equation and create
           predictions. We again tuned the hyperparameters using GridSearch to
-          find what is the best fit model.
+          find what is the best fit model. The hyperparameters that we used were
+          a learning rate of .001 (this determines the step size), a hidden
+          layer size of (10,100), and with an alpha value of 5x10<sup>-5</sup>.
         </p>
         <h2>SVR vs ANN</h2>
         <p>
@@ -155,7 +160,16 @@
           the data. We then took the Root Mean Square Error (RMSE) between the
           obsevations and predictions for each model, so the lower the error
           rate the more accurate the model. The models for SVR-GARCH proved to
-          be more accurate than those of ANN-GARCH.
+          be more accurate than those of ANN-GARCH. The average RMSE for the SVR
+          model 6.16x10<sup>-5</sup> which was lower than the 1.78x10<sup
+            >-4</sup
+          >
+          average for the ANN model. Among the volitility spans, the 63 day span
+          performed the best, with an average of 2.21x10<sup>-5</sup>, with 5
+          and 21 days having averages of 1.18x10<sup>-4</sup> and 4.50x10<sup
+            >-5</sup
+          >
+          respectively.
         </p>
         <h2>Plots</h2>
         <h3>AAPL (Apple)</h3>
@@ -174,10 +188,10 @@
         <div id="JPM5"></div>
         <div id="JPM21"></div>
         <div id="JPM63"></div>
-        <h3>NFLX (Netflix)</h3>
-        <div id="NFLX5"></div>
-        <div id="NFLX21"></div>
-        <div id="NFLX63"></div>
+        <h3>TSLA (Tesla)</h3>
+        <div id="TSLA5"></div>
+        <div id="TSLA21"></div>
+        <div id="TSLA63"></div>
         <h3>ADA (Cardano)</h3>
         <div id="ADA5"></div>
         <div id="ADA21"></div>

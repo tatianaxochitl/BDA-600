@@ -14,9 +14,9 @@ def main():
 
     # Download Stock CSV for past 4 years
     df = yf.download(
-        "NFLX JPM FB AMZN AAPL", start="2018-01-01", end="2022-03-01", group_by="ticker"
+        "TSLA JPM FB AMZN AAPL", start="2018-01-01", end="2022-03-01", group_by="ticker"
     )
-    df.NFLX.to_csv("data/stocks/NFLX.csv")
+    df.TSLA.to_csv("data/stocks/TSLA.csv")
     df.JPM.to_csv("data/stocks/JPM.csv")
     df.FB.to_csv("data/stocks/FB.csv")
     df.AMZN.to_csv("data/stocks/AMZN.csv")

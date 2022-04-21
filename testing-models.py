@@ -54,7 +54,7 @@ all_files = [
     "data/stocks/AMZN_features.csv",
     "data/stocks/FB_features.csv",
     "data/stocks/JPM_features.csv",
-    "data/stocks/NFLX_features.csv",
+    "data/stocks/TSLA_features.csv",
 ]
 
 var_vol = [
