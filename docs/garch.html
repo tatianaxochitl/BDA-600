@@ -111,7 +111,7 @@
         <p>
           <strong>G</strong>eneralized <strong>A</strong>utoregressive
           <strong>C</strong>onditional <strong>H</strong>eteroskedasticity or
-          <strong>GARCH</strong> is used to model and predict volitlity in
+          <strong>GARCH</strong> is used to model and predict volatility in
           financial time series data. The formula is as follows:
         </p>
         <p style="text-align: center">
@@ -121,23 +121,23 @@
           </em>
         </p>
         <p>
-          <em>σ<sup>2</sup><sub>t</sub></em> represents the volitlity,
+          <em>σ<sup>2</sup><sub>t</sub></em> represents the volatility,
           <em>ε<sup>2</sup><sub>t-1</sub></em> is the square of returns from the
           previous observation, and <em>σ<sup>2</sup><sub>t-1</sub></em> is the
-          volitlity of the previous observation. <em>ω</em>, <em>α</em>, and
+          volatility of the previous observation. <em>ω</em>, <em>α</em>, and
           <em>β</em> are all parameters calculated by looking at previous
           observations. After seeing the accuracy of volatility predictions in
           other papers using SVR-GARCH and ANN-GARCH, we based our
           implementations of SVR-GARCH and ANN-GARCH after those in
           <em>Machine Learning for Financial Risk Management</em> by Abdullah
-          Karasan. For the time period of volitility, we looked at the 5 day, 21
-          day, and 63 day volitility, which in terms of stocks are a week, one
+          Karasan. For the time period of volatility, we looked at the 5 day, 21
+          day, and 63 day volatility, which in terms of stocks are a week, one
           month, and three months.
         </p>
         <h2>SVR-GARCH</h2>
         <p>
           SVR-GARCH is using Support Vector Regression in order to solve for the
-          volitlity. With SVR we use the same variables of the previous
+          volatility. With SVR we use the same variables of the previous
           observations in order to solve for the current, but allow SVR to solve
           for the equation that will predict the next observation. We only had
           to find the best hyperparameters for our model by using GridSearch.
@@ -165,7 +165,7 @@
           model 6.16x10<sup>-5</sup> which was lower than the 1.78x10<sup
             >-4</sup
           >
-          average for the ANN model. Among the volitility spans, the 63 day span
+          average for the ANN model. Among the volatility spans, the 63 day span
           performed the best, with an average of 2.21x10<sup>-5</sup>, with 5
           and 21 days having averages of 1.18x10<sup>-4</sup> and 4.50x10<sup
             >-5</sup
