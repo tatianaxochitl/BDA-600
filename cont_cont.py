@@ -26,7 +26,7 @@ def linear_regression(df, predictor, response):
         x=predictor,
         y=response,
         trendline="ols",
-        title=f"(t-value={t_value}) (p-value={p_value})",
+        title=f"{predictor} VS {response} (t-value={t_value}) (p-value={p_value})",
     )
 
     fig.write_html(

@@ -58,9 +58,6 @@ all_files = [
 ]
 
 var_vol = [
-    "Variance (5 Day)",
-    "Variance (21 Day)",
-    "Variance (63 Day)",
     "Volatility (5 Day)",
     "Volatility (21 Day)",
     "Volatility (63 Day)",
@@ -69,7 +66,6 @@ var_vol = [
 for file in all_files:
     df = pd.read_csv(file)
     name = re.findall(r".+/(.+)\.csv", file)
-    mini_df = df[["Date", "Sq Returns", "Variance (5 Day)"]]
     for v_stat in var_vol:
         mini_df = df[["Date", "Sq Returns", v_stat]]
         mini_df["Actual"] = mini_df[v_stat].shift(1)

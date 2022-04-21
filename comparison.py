@@ -23,14 +23,16 @@ def main():
         "data/stocks/FB_features.csv",
         "data/stocks/JPM_features.csv",
         "data/stocks/TSLA_features.csv",
-        "data/DJI_features.csv",
-        "data/GSPC_features.csv",
-        "data/NDX_features.csv",
     ]
 
     adj_close = pd.DataFrame()
     log_returns = pd.DataFrame()
     volatility = pd.DataFrame()
+    open_price = pd.DataFrame()
+    open_close = pd.DataFrame()
+    volume = pd.DataFrame()
+    high = pd.DataFrame()
+    low = pd.DataFrame()
 
     for file in all_files:
         m = re.findall(r"/([A-Z]+)_", file)
@@ -39,27 +41,56 @@ def main():
         adj_close[fa_name] = df["Adj Close"]
         log_returns[fa_name] = df["Log Returns"]
         volatility[fa_name] = df["Volatility (5 Day)"]
+        open_price[fa_name] = df["Previous Open"]
+        open_close[fa_name] = df["Close Minus Open"]
+        volume[fa_name] = df["Previous Volume"]
+        high[fa_name] = df["Previous High"]
+        low[fa_name] = df["Previous Low"]
 
-    fac_list = ["adj_close", "log_returns", "volatility"]
+    fac_list = [
+        "adj_close",
+        "log_returns",
+        "volatility",
+        "open",
+        "open_close",
+        "volume",
+        "high",
+        "low",
+    ]
     i = 0
 
     os.chdir("docs/plots")
 
-    for df in [adj_close, log_returns, volatility]:
+    for df in [
+        adj_close,
+        log_returns,
+        volatility,
+        open_price,
+        open_close,
+        volume,
+        high,
+        low,
+    ]:
         df = df.dropna()
         corr_matrix = pd.DataFrame(columns=adj_close.columns, index=adj_close.columns)
+        p_corr = pd.DataFrame()
         lr_matrix = pd.DataFrame(columns=adj_close.columns, index=adj_close.columns)
         fa_list = itertools.combinations(adj_close.columns, 2)
         for fa1, fa2 in fa_list:
             # Plotting
             filename = linear_regression(df, fa1, fa2)
-            lr_matrix.at[fa1, fa2] = "plots/" + filename
-            lr_matrix.at[fa2, fa1] = "plots/" + filename
+            os.rename(filename, f"{fac_list[i]}_{filename}")
+            lr_matrix.at[fa1, fa2] = f"plots/{fac_list[i]}_" + filename
+            lr_matrix.at[fa2, fa1] = f"plots/{fac_list[i]}_" + filename
             # Correlation Stats
             cont_cont_corr, p = stats.pearsonr(df[fa1], df[fa2])
             # Put value in correlation matrix
-            corr_matrix.at[fa1, fa2] = cont_cont_corr
-            corr_matrix.at[fa2, fa1] = cont_cont_corr
+            corr_matrix.at[fa1, fa2] = abs(cont_cont_corr)
+            corr_matrix.at[fa2, fa1] = abs(cont_cont_corr)
+            p_corr.at[fa1 + fa2] = p
+
+        with open(f"{fac_list[i]}_p_corr.html", "w") as f:
+            f.write(p_corr.to_html())
 
         corr_matrix = corr_matrix.fillna(value=1)
         fig = px.imshow(
