@@ -4,6 +4,7 @@ import warnings
 
 import numpy as np
 import pandas as pd
+import plotly.express as px
 import plotly.graph_objects as go
 from sklearn.metrics import mean_squared_error as mse
 from sklearn.neural_network import MLPRegressor
@@ -63,9 +64,14 @@ var_vol = [
     "Volatility (63 Day)",
 ]
 
+rmse_df = pd.DataFrame(
+    columns=["Financial Asset", "RMSE Value", "Volatility Span", "Model"]
+)
+
 for file in all_files:
     df = pd.read_csv(file)
     name = re.findall(r".+/(.+)\.csv", file)
+    better_name = re.findall(r"(.+)_features", name[0])
     for v_stat in var_vol:
         mini_df = df[["Date", "Sq Returns", v_stat]]
         mini_df["Actual"] = mini_df[v_stat].shift(1)
@@ -101,12 +107,15 @@ for file in all_files:
                 mini_df["SVR Prediction"].iloc[-n:] / 100,
             )
         )
+        rmse_df.loc[len(rmse_df.index)] = [better_name[0], rmse_svr, v_stat, "SVR"]
         rmse_ann = np.sqrt(
             mse(
                 mini_df["Actual"].iloc[-n:] / 100,
                 mini_df["ANN Prediction"].iloc[-n:] / 100,
             )
         )
+        rmse_df.loc[len(rmse_df.index)] = [better_name[0], rmse_ann, v_stat, "ANN"]
+
         fig = go.Figure()
         fig.add_trace(
             go.Scatter(
@@ -135,3 +144,12 @@ for file in all_files:
             yaxis_title=v_stat,
         )
         fig.write_html(f"docs/plots/{name[0]}_{v_stat}_GARCH_Prediction.html")
+
+fig = px.scatter(
+    rmse_df,
+    x="Financial Asset",
+    y="RMSE Value",
+    color="Model",
+    hover_data=["Volatility Span"],
+)
+fig.write_html("docs/plots/RMSE.html")
