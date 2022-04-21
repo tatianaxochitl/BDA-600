@@ -10,6 +10,25 @@
         $("#adj-matrix").load("plots/adj_close_corr_matrix.html");
         $("#log-matrix").load("plots/log_returns_corr_matrix.html");
         $("#vol-matrix").load("plots/volatility_corr_matrix.html");
+        $("#open-matrix").load("plots/open_corr_matrix.html");
+        $("#open/close-matrix").load("plots/open_close_corr_matrix.html");
+        $("#high-matrix").load("plots/high_corr_matrix.html");
+        $("#low-matrix").load("plots/low_corr_matrix.html");
+        $("#volu-matrix").load("plots/volume_corr_matrix.html");
+        $("#adj-corr").load("plots/adj_close_p_corr.html");
+        $("#log-corr").load("plots/log_returns_p_corr.html");
+        $("#vol-corr").load("plots/volatility_p_corr.html");
+        $("#open-corr").load("plots/open_p_corr.html");
+        $("#open/close-corr").load("plots/open_close_p_corr.html");
+        $("#high-corr").load("plots/high_p_corr.html");
+        $("#low-corr").load("plots/low_p_corr.html");
+        $("#volu-corr").load("plots/volume_p_corr.html");
+        $("#HistOpen").load("plots/HistoricalDailyOpen.html");
+        $("#HistClose").load("plots/HistoricalDailyAdjClose.html");
+        $("#OpenClose").load("plots/HistoricalOpenCloseDiff.html");
+        $("#HistHigh").load("plots/HistoricalDailyHigh.html");
+        $("#HistLow").load("plots/HistoricalDailyLow.html");
+        $("#HistVolume").load("plots/HistoricalVolumeTraded.html");
       });
     </script>
     <meta charset="utf-8" />
@@ -20,21 +39,47 @@
       <main>
         <h1>Correlation Findings</h1>
         <p>
-          For correlation we decided to look at the features of price, log
-          returns, and volatility to see if there is a commonality between the
-          financial assets in terms of any of these. To analyze this we used
-          linear regression for each pair and created a heatmap based on
-          Pearson's r between the two assets being compared.
+          For correlation we decided to look at the features of opening price,
+          closing price, open/close difference, high, low, log returns,
+          volatility, and volume traded to see if there is a commonality between
+          the financial assets in terms of any of these. To analyze this we used
+          linear regression for each pair and created a heatmap based on p value
+          between the two assets being compared. The color scale for the p value
+          is set for the mid point at .05 so those that fall below can be show
+          to have a statistically significant correlation. We also created
+          graphs in order to compare the trends of the different stocks to
+          better help look at the correlation show by the p-values.
         </p>
-        <h2>Pearson's R and Linear Regression</h2>
-        For each heatmap please click the cell where two assets intersect in
-        order to view the linear regression plot.
-        <h3>Adjusted Close Price</h3>
+        <h3>Historical Daily Opening Prices</h3>
+        <div id="HistOpen"></div>
+        <div id="open-matrix"></div>
+        <div id="open-corr"></div>
+        <h3>Historical Daily Closing Prices</h3>
+        <div id="HistClose"></div>
         <div id="adj-matrix"></div>
-        <h3>Log Returns</h3>
+        <div id="adj-corr"></div>
+        <h3>Historical Daily Open/Close Difference</h3>
+        <div id="OpenClose"></div>
+        <div id="open/close-matrix"></div>
+        <div id="open/close-corr"></div>
+        <h3>Historical Daily High</h3>
+        <div id="HistHigh"></div>
+        <div id="high-matrix"></div>
+        <div id="high-corr"></div>
+        <h3>Historical Daily Low</h3>
+        <div id="HistLow"></div>
+        <div id="low-matrix"></div>
+        <div id="low-corr"></div>
+        <h3>Historical Daily Volume Traded</h3>
+        <div id="HistVolume"></div>
+        <div id="volu-matrix"></div>
+        <div id="volu-corr"></div>
+        <h3>Historical Log Returns</h3>
         <div id="log-matrix"></div>
-        <h3>Volatility</h3>
+        <div id="log-corr"></div>
+        <h3>Historical Volatility</h3>
         <div id="vol-matrix"></div>
+        <div id="vol-corr"></div>
       </main>
       <div id="footer"></div>
     </body>
