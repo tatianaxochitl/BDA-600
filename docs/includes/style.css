@@ -79,3 +79,9 @@ footer {
   display: table;
   clear: both;
 }
+
+/* center iframe*/
+iframe {
+  display: block;
+  border-style: none;
+}
