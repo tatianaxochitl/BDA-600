@@ -23,12 +23,6 @@
         $("#high-corr").load("plots/high_p_corr.html");
         $("#low-corr").load("plots/low_p_corr.html");
         $("#volu-corr").load("plots/volume_p_corr.html");
-        $("#HistOpen").load("plots/HistoricalDailyOpen.html");
-        $("#HistClose").load("plots/HistoricalDailyAdjClose.html");
-        $("#OpenClose").load("plots/HistoricalOpenCloseDiff.html");
-        $("#HistHigh").load("plots/HistoricalDailyHigh.html");
-        $("#HistLow").load("plots/HistoricalDailyLow.html");
-        $("#HistVolume").load("plots/HistoricalVolumeTraded.html");
       });
     </script>
     <meta charset="utf-8" />
@@ -42,44 +36,55 @@
           For correlation we decided to look at the features of opening price,
           closing price, open/close difference, high, low, log returns,
           volatility, and volume traded to see if there is a commonality between
-          the financial assets in terms of any of these. To analyze this we used
-          linear regression for each pair and created a heatmap based on p value
-          between the two assets being compared. The color scale for the p value
-          is set for the mid point at .05 so those that fall below can be show
-          to have a statistically significant correlation. We also created
-          graphs in order to compare the trends of the different stocks to
-          better help look at the correlation show by the p-values.
+          the financial assets in terms of any of these. To look at the the
+          correlation between the assets we used Pearson's R and linear
+          regression. The first heatmap is based on the absolute value of the
+          Pearson's R (so the higher the better) and the second heatmap uses the
+          P value from the Pearson's R calculation, and if below .05 indicates
+          that there is a statistically significant relationship between the two
+          assets. Additionally, click on the cells in the Pearson's R heatmap to
+          see the graph of the linear regression between the two assets.
         </p>
         <h3>Historical Daily Opening Prices</h3>
-        <div id="HistOpen"></div>
+        <h4>Pearson's R</h4>
         <div id="open-matrix"></div>
+        <h4>P-value</h4>
         <div id="open-corr"></div>
         <h3>Historical Daily Closing Prices</h3>
-        <div id="HistClose"></div>
+        <h4>Pearson's R</h4>
         <div id="adj-matrix"></div>
+        <h4>P-value</h4>
         <div id="adj-corr"></div>
         <h3>Historical Daily Open/Close Difference</h3>
-        <div id="OpenClose"></div>
+        <h4>Pearson's R</h4>
         <div id="open-close-matrix"></div>
+        <h4>P-value</h4>
         <div id="open-close-corr"></div>
         <h3>Historical Daily High</h3>
-        <div id="HistHigh"></div>
+        <h4>Pearson's R</h4>
         <div id="high-matrix"></div>
+        <h4>P-value</h4>
         <div id="high-corr"></div>
         <h3>Historical Daily Low</h3>
-        <div id="HistLow"></div>
+        <h4>Pearson's R</h4>
         <div id="low-matrix"></div>
+        <h4>P-value</h4>
         <div id="low-corr"></div>
-        <h3>Historical Daily Volume Traded</h3>
-        <div id="HistVolume"></div>
-        <div id="volu-matrix"></div>
-        <div id="volu-corr"></div>
         <h3>Historical Log Returns</h3>
+        <h4>Pearson's R</h4>
         <div id="log-matrix"></div>
+        <h4>P-value</h4>
         <div id="log-corr"></div>
         <h3>Historical Volatility</h3>
+        <h4>Pearson's R</h4>
         <div id="vol-matrix"></div>
+        <h4>P-value</h4>
         <div id="vol-corr"></div>
+        <h3>Historical Daily Volume Traded</h3>
+        <h4>Pearson's R</h4>
+        <div id="volu-matrix"></div>
+        <h4>P-value</h4>
+        <div id="volu-corr"></div>
       </main>
       <div id="footer"></div>
     </body>

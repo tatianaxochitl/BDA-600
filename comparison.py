@@ -73,7 +73,7 @@ def main():
     ]:
         df = df.dropna()
         corr_matrix = pd.DataFrame(columns=adj_close.columns, index=adj_close.columns)
-        p_corr = pd.DataFrame()
+        p_corr = pd.DataFrame(columns=adj_close.columns, index=adj_close.columns)
         lr_matrix = pd.DataFrame(columns=adj_close.columns, index=adj_close.columns)
         fa_list = itertools.combinations(adj_close.columns, 2)
         for fa1, fa2 in fa_list:
@@ -87,10 +87,18 @@ def main():
             # Put value in correlation matrix
             corr_matrix.at[fa1, fa2] = abs(cont_cont_corr)
             corr_matrix.at[fa2, fa1] = abs(cont_cont_corr)
-            p_corr.at[fa1 + fa2] = p
+            p_corr.at[fa2, fa1] = p
+            p_corr.at[fa1, fa2] = p
 
-        with open(f"{fac_list[i]}_p_corr.html", "w") as f:
-            f.write(p_corr.to_html())
+        p_corr = p_corr.fillna(value=1)
+        p_fig = px.imshow(
+            p_corr.values, x=corr_matrix.columns, y=corr_matrix.index, zmin=0, zmax=0.1
+        )
+
+        p_fig.write_html(
+            file=f"{fac_list[i]}_p_corr.html",
+            include_plotlyjs="cdn",
+        )
 
         corr_matrix = corr_matrix.fillna(value=1)
         fig = px.imshow(
