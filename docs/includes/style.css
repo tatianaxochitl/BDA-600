@@ -62,3 +62,20 @@ footer {
   background-color: #0c544e; /* Add a green color to the "active/current" link */
   color: white;
 }
+
+.two-column {
+  float: left;
+  width: 50%;
+}
+
+.three-column {
+  float: left;
+  width: 33%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
