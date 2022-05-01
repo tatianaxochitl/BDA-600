@@ -1,14 +1,14 @@
-import itertools
 import os
 import re
 import sys
 
+import numpy as np
 import pandas as pd
 from plotly import express as px
+from plotly import graph_objects as go
 from plotly.offline import plot
+from plotly.subplots import make_subplots
 from scipy import stats
-
-from cont_cont import linear_regression
 
 
 def main():
@@ -18,21 +18,15 @@ def main():
         "data/crypto/DOGE_features.csv",
         "data/crypto/ETH_features.csv",
         "data/crypto/SOL_features.csv",
-        "data/stocks/AAPL_features.csv",
-        "data/stocks/AMZN_features.csv",
-        "data/stocks/FB_features.csv",
-        "data/stocks/JPM_features.csv",
-        "data/stocks/TSLA_features.csv",
+        "data/DJI_features.csv",
+        "data/GSPC_features.csv",
+        "data/NDX_features.csv",
     ]
 
     adj_close = pd.DataFrame()
     log_returns = pd.DataFrame()
     volatility = pd.DataFrame()
-    open_price = pd.DataFrame()
-    open_close = pd.DataFrame()
     volume = pd.DataFrame()
-    high = pd.DataFrame()
-    low = pd.DataFrame()
 
     for file in all_files:
         m = re.findall(r"/([A-Z]+)_", file)
@@ -41,21 +35,13 @@ def main():
         adj_close[fa_name] = df["Adj Close"]
         log_returns[fa_name] = df["Log Returns"]
         volatility[fa_name] = df["Volatility (5 Day)"]
-        open_price[fa_name] = df["Previous Open"]
-        open_close[fa_name] = df["Close Minus Open"]
         volume[fa_name] = df["Previous Volume"]
-        high[fa_name] = df["Previous High"]
-        low[fa_name] = df["Previous Low"]
 
     fac_list = [
         "adj_close",
         "log_returns",
         "volatility",
-        "open",
-        "open_close",
         "volume",
-        "high",
-        "low",
     ]
     i = 0
 
@@ -65,50 +51,85 @@ def main():
         adj_close,
         log_returns,
         volatility,
-        open_price,
-        open_close,
         volume,
-        high,
-        low,
     ]:
         df = df.dropna()
-        corr_matrix = pd.DataFrame(columns=adj_close.columns, index=adj_close.columns)
-        p_corr = pd.DataFrame(columns=adj_close.columns, index=adj_close.columns)
-        lr_matrix = pd.DataFrame(columns=adj_close.columns, index=adj_close.columns)
-        fa_list = itertools.combinations(adj_close.columns, 2)
-        for fa1, fa2 in fa_list:
-            # Plotting
-            filename = linear_regression(df, fa1, fa2)
-            os.rename(filename, f"{fac_list[i]}_{filename}")
-            lr_matrix.at[fa1, fa2] = f"plots/{fac_list[i]}_" + filename
-            lr_matrix.at[fa2, fa1] = f"plots/{fac_list[i]}_" + filename
-            # Correlation Stats
-            cont_cont_corr, p = stats.pearsonr(df[fa1], df[fa2])
-            # Put value in correlation matrix
-            corr_matrix.at[fa1, fa2] = abs(cont_cont_corr)
-            corr_matrix.at[fa2, fa1] = abs(cont_cont_corr)
-            p_corr.at[fa2, fa1] = p
-            p_corr.at[fa1, fa2] = p
-
-        p_corr = p_corr.fillna(value=1)
-        p_fig = px.imshow(
-            p_corr.values, x=corr_matrix.columns, y=corr_matrix.index, zmin=0, zmax=0.1
+        stock_ind = ["DJI", "GSPC", "NDX"]
+        crypto = ["ADA", "BTC", "DOGE", "ETH", "SOL"]
+        corr_matrix = pd.DataFrame(columns=crypto, index=stock_ind)
+        p_corr = pd.DataFrame(columns=crypto, index=stock_ind)
+        tlcc_matrix = pd.DataFrame(columns=crypto, index=stock_ind)
+        off_matrix = pd.DataFrame(columns=crypto, index=stock_ind)
+        for fa1 in stock_ind:
+            for fa2 in crypto:
+                # Plotting
+                # making tlcc charts
+                rs = [crosscorr(df[fa1], df[fa2], lag) for lag in range(-63, 64)]
+                offset = np.argmax(rs) - 63
+                tlcc_fig = px.line(
+                    df,
+                    x=range(-63, 64),
+                    y=rs,
+                    title=f"{fa1} vs {fa2} TLCC (Offset = {offset} days)",
+                )
+                tlcc_fig.add_vline(
+                    x=offset, line_width=3, line_dash="dash", line_color="red"
+                )
+                tlcc_fig.add_vline(
+                    x=0, line_width=3, line_dash="dash", line_color="black"
+                )
+                filename = f"{fac_list[i]}_{fa1}_{fa2}_tlcc.html"
+                tlcc_fig.write_html(filename)
+                off_matrix.at[fa1, fa2] = offset
+                tlcc_matrix.at[fa1, fa2] = "plots/" + filename
+                # Correlation Stats
+                cont_cont_corr, p = stats.pearsonr(df[fa1], df[fa2])
+                # Put value in correlation matrix
+                corr_matrix.at[fa1, fa2] = abs(cont_cont_corr)
+                p_corr.at[fa1, fa2] = p
+        pearson_fig = make_subplots(1, 2, horizontal_spacing=0.15)
+        pearson_fig.add_trace(
+            go.Heatmap(
+                z=corr_matrix.values.tolist(),
+                x=corr_matrix.columns.tolist(),
+                y=corr_matrix.index.tolist(),
+                zmin=0,
+                zmax=1,
+                texttemplate="%{z:.2f}",
+                colorscale="mint",
+                colorbar_x=0.45,
+            ),
+            1,
+            1,
+        )
+        pearson_fig.add_trace(
+            go.Heatmap(
+                z=p_corr.values.tolist(),
+                x=corr_matrix.columns.tolist(),
+                y=corr_matrix.index.tolist(),
+                zmin=0,
+                zmax=0.1,
+                texttemplate="%{z:.2f}",
+                colorscale="tealrose",
+            ),
+            1,
+            2,
         )
 
-        p_fig.write_html(
-            file=f"{fac_list[i]}_p_corr.html",
-            include_plotlyjs="cdn",
-        )
+        pearson_fig.write_html(f"{fac_list[i]}_corr_matrix.html")
 
-        corr_matrix = corr_matrix.fillna(value=1)
-        fig = px.imshow(
-            corr_matrix.values,
-            x=corr_matrix.columns,
-            y=corr_matrix.index,
-            zmin=0,
-            zmax=1,
+        fig = go.Figure(
+            data=go.Heatmap(
+                z=off_matrix.values.tolist(),
+                x=off_matrix.columns.tolist(),
+                y=off_matrix.index.tolist(),
+                zmin=-63,
+                zmax=63,
+                texttemplate="%{z}",
+                colorscale="tealrose",
+            )
         )
-        fig.update(data=[{"customdata": lr_matrix}])
+        fig.update(data=[{"customdata": tlcc_matrix}])
 
         plot_div = plot(fig, output_type="div", include_plotlyjs=True)
         # Get id of html div element that looks like
@@ -147,9 +168,29 @@ def main():
         )
 
         # Write out HTML file
-        with open(f"{fac_list[i]}_corr_matrix.html", "w") as f:
+        with open(f"{fac_list[i]}_tlcc_matrix.html", "w") as f:
             f.write(html_str)
         i = i + 1
+
+
+def crosscorr(datax, datay, lag=0, wrap=False):
+    """Lag-N cross correlation.
+    Shifted data filled with NaNs
+
+    Parameters
+    ----------
+    lag : int, default 0
+    datax, datay : pandas.Series objects of equal length
+    Returns
+    ----------
+    crosscorr : float
+    """
+    if wrap:
+        shiftedy = datay.shift(lag)
+        shiftedy.iloc[:lag] = datay.iloc[-lag:].values
+        return datax.corr(shiftedy)
+    else:
+        return datax.corr(datay.shift(lag))
 
 
 if __name__ == "__main__":

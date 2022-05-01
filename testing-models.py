@@ -7,6 +7,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 from sklearn.metrics import mean_squared_error as mse
+from sklearn.metrics import r2_score
 from sklearn.neural_network import MLPRegressor
 from sklearn.svm import SVR
 
@@ -65,7 +66,7 @@ var_vol = [
 ]
 
 rmse_df = pd.DataFrame(
-    columns=["Financial Asset", "RMSE Value", "Volatility Span", "Model"]
+    columns=["Financial Asset", "RMSE Value", "Volatility Span", "Model", "R2 score"]
 )
 
 for file in all_files:
@@ -107,14 +108,34 @@ for file in all_files:
                 mini_df["SVR Prediction"].iloc[-n:] / 100,
             )
         )
-        rmse_df.loc[len(rmse_df.index)] = [better_name[0], rmse_svr, v_stat, "SVR"]
+        r2_svr = r2_score(
+            mini_df["Actual"].iloc[-n:], mini_df["SVR Prediction"].iloc[-n:]
+        )
+
+        rmse_df.loc[len(rmse_df.index)] = [
+            better_name[0],
+            rmse_svr,
+            v_stat,
+            "SVR",
+            r2_svr,
+        ]
         rmse_ann = np.sqrt(
             mse(
                 mini_df["Actual"].iloc[-n:] / 100,
                 mini_df["ANN Prediction"].iloc[-n:] / 100,
             )
         )
-        rmse_df.loc[len(rmse_df.index)] = [better_name[0], rmse_ann, v_stat, "ANN"]
+        r2_ann = r2_score(
+            mini_df["Actual"].iloc[-n:], mini_df["ANN Prediction"].iloc[-n:]
+        )
+
+        rmse_df.loc[len(rmse_df.index)] = [
+            better_name[0],
+            rmse_ann,
+            v_stat,
+            "ANN",
+            r2_ann,
+        ]
 
         fig = go.Figure()
         fig.add_trace(
@@ -145,6 +166,7 @@ for file in all_files:
         )
         fig.write_html(f"docs/plots/{name[0]}_{v_stat}_GARCH_Prediction.html")
 
+print(rmse_df)
 fig = px.scatter(
     rmse_df,
     x="Financial Asset",
