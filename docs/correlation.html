@@ -10,19 +10,11 @@
         $("#adj-matrix").load("plots/adj_close_corr_matrix.html");
         $("#log-matrix").load("plots/log_returns_corr_matrix.html");
         $("#vol-matrix").load("plots/volatility_corr_matrix.html");
-        $("#open-matrix").load("plots/open_corr_matrix.html");
-        $("#open-close-matrix").load("plots/open_close_corr_matrix.html");
-        $("#high-matrix").load("plots/high_corr_matrix.html");
-        $("#low-matrix").load("plots/low_corr_matrix.html");
         $("#volu-matrix").load("plots/volume_corr_matrix.html");
-        $("#adj-corr").load("plots/adj_close_p_corr.html");
-        $("#log-corr").load("plots/log_returns_p_corr.html");
-        $("#vol-corr").load("plots/volatility_p_corr.html");
-        $("#open-corr").load("plots/open_p_corr.html");
-        $("#open-close-corr").load("plots/open_close_p_corr.html");
-        $("#high-corr").load("plots/high_p_corr.html");
-        $("#low-corr").load("plots/low_p_corr.html");
-        $("#volu-corr").load("plots/volume_p_corr.html");
+        $("#adj-tlcc").load("plots/adj_close_tlcc_matrix.html");
+        $("#log-tlcc").load("plots/log_returns_tlcc_matrix.html");
+        $("#vol-tlcc").load("plots/volatility_tlcc_matrix.html");
+        $("#volu-tlcc").load("plots/volume_tlcc_matrix.html");
       });
     </script>
     <meta charset="utf-8" />
@@ -37,54 +29,35 @@
           closing price, open/close difference, high, low, log returns,
           volatility, and volume traded to see if there is a commonality between
           the financial assets in terms of any of these. To look at the the
-          correlation between the assets we used Pearson's R and linear
-          regression. The first heatmap is based on the absolute value of the
-          Pearson's R (so the higher the better) and the second heatmap uses the
-          P value from the Pearson's R calculation, and if below .05 indicates
-          that there is a statistically significant relationship between the two
-          assets. Additionally, click on the cells in the Pearson's R heatmap to
-          see the graph of the linear regression between the two assets.
+          correlation between the assets we used Pearson's R and Time Lagged
+          Cross Correlation. The first heatmap is based on the absolute value of
+          the Pearson's R (so the higher the better) and the second heatmap uses
+          the P value from the Pearson's R calculation, and if below .05
+          indicates that there is a statistically significant relationship
+          between the two assets. The graph below that is for the TLCC which
+          shows if there is a follow the leader relationship between the two
+          time series.
         </p>
-        <h3>Historical Daily Opening Prices</h3>
-        <h4>Pearson's R</h4>
-        <div id="open-matrix"></div>
-        <h4>P-value</h4>
-        <div id="open-corr"></div>
         <h3>Historical Daily Closing Prices</h3>
-        <h4>Pearson's R</h4>
+        <h4>Pearson's R & p-value</h4>
         <div id="adj-matrix"></div>
-        <h4>P-value</h4>
-        <div id="adj-corr"></div>
-        <h3>Historical Daily Open/Close Difference</h3>
-        <h4>Pearson's R</h4>
-        <div id="open-close-matrix"></div>
-        <h4>P-value</h4>
-        <div id="open-close-corr"></div>
-        <h3>Historical Daily High</h3>
-        <h4>Pearson's R</h4>
-        <div id="high-matrix"></div>
-        <h4>P-value</h4>
-        <div id="high-corr"></div>
-        <h3>Historical Daily Low</h3>
-        <h4>Pearson's R</h4>
-        <div id="low-matrix"></div>
-        <h4>P-value</h4>
-        <div id="low-corr"></div>
-        <h3>Historical Log Returns</h3>
-        <h4>Pearson's R</h4>
+        <h4>TLCC</h4>
+        <div id="adj-tlcc"></div>
+        <h3>Historial Log Returns</h3>
+        <h4>Pearson's R and p-value</h4>
         <div id="log-matrix"></div>
-        <h4>P-value</h4>
-        <div id="log-corr"></div>
+        <h4>TLCC</h4>
+        <div id="log-tlcc"></div>
         <h3>Historical Volatility</h3>
-        <h4>Pearson's R</h4>
+        <h4>Pearson's R & p-value</h4>
         <div id="vol-matrix"></div>
-        <h4>P-value</h4>
-        <div id="vol-corr"></div>
+        <h4>TLCC</h4>
+        <div id="vol-tlcc"></div>
         <h3>Historical Daily Volume Traded</h3>
-        <h4>Pearson's R</h4>
+        <h4>Pearson's R & p-value</h4>
         <div id="volu-matrix"></div>
-        <h4>P-value</h4>
-        <div id="volu-corr"></div>
+        <h4>TLCC</h4>
+        <div id="volu-tlcc"></div>
       </main>
       <div id="footer"></div>
     </body>
